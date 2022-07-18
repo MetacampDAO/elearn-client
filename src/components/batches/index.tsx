@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { conn, initElearnClient } from '../../client/common/init';
-import { ManagerProof } from '../../interface/managerProof';
-import { PublicKey } from '@solana/web3.js';
 import { Batch } from '../../interface/batch';
 
 const Batches = () => {

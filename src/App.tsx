@@ -16,10 +16,10 @@ export const App: FC = () => {
                     <Routes>
                         {/* <Route path='/join' element={
                             <Join />
-                        } />
-                        <Route path='/play/:gameId' element={
-                            <PlayGame />
                         } /> */}
+                        <Route path='/batch/:batchKey' element={
+                            <Batches />
+                        } />
                         <Route path='/batches' element={
                             <Batches />
                         } />
