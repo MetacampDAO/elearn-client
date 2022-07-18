@@ -1,139 +1,339 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
+import { useParams } from 'react-router-dom';
 import { conn, initElearnClient } from '../../client/common/init';
-import { BatchAcc } from '../../interface/batch';
+import { CertificateAcc } from '../../interface/certificate';
+import { PublicKey } from '@solana/web3.js';
+import { GenCertificate } from '../../interface/certificate';
+import _ from 'lodash';
 
 const Batch = () => {
     const wallet = useAnchorWallet();
-    const [newBatchName, setNewBatchName] = useState<string>('');
-    const [batchList, setBatchList] = useState<BatchAcc[]>();
+    const { batchKey } = useParams();
+    const [newCertificate, setNewCertificate] = useState<GenCertificate>({
+        studentKey: '',
+        completeDate: '',
+        studentName: '',
+        studentGrade: '',
+        courseName: '',
+        schoolName: '',
+        schoolUri: '',
+        issuerName: '',
+        issuerRole: '',
+        issuerUri: '',
+    });
+    const [certList, setCertList] = useState<CertificateAcc[]>();
 
     useEffect(() => {
         (async () => {
-            populateBatchTable();
+            populateCertTable();
         })();
-    }, [wallet]);
+    }, []);
 
-    const populateBatchTable = async () => {
-        if (wallet) {
+    const populateCertTable = async () => {
+        if (wallet && batchKey) {
             const elClient = await initElearnClient();
-            const allBatchManagerAcc = await elClient.findAllBatchAccByManagerKey(wallet.publicKey);
-            setBatchList(
-                allBatchManagerAcc.map((row, _) => {
-                    return {
-                        batchPDA: row.publicKey,
-                        managerKey: row.account.managerKey,
-                        certificateCount: row.account.certificateCount,
-                        batchNum: row.account.batchNum,
-                        batchName: row.account.batchName,
-                        batchBump: row.account.batchBump,
-                    };
-                })
+            const batchPDA = new PublicKey(batchKey);
+            const allCertBatchAcc = await elClient.findAllCertificateAccByBatchPDA(batchPDA);
+            setCertList(
+                allCertBatchAcc
+                    .sort((row) => Number(row.account.certificateNum))
+                    .reverse()
+                    .map((row, _) => {
+                        return {
+                            certificatePDA: row.publicKey,
+                            batchPDA: row.account.batchPda,
+                            managerKey: row.account.managerKey,
+                            studentKey: row.account.studentKey,
+                            completeDate: row.account.completeDate,
+                            certificateNum: row.account.certificateNum,
+                            certificateBump: row.account.certificateBump,
+                            studentName: row.account.studentName,
+                            studentGrade: row.account.studentGrade,
+                            courseName: row.account.courseName,
+                            schoolName: row.account.schoolName,
+                            schoolUri: row.account.schoolUri,
+                            issuerName: row.account.issuerName,
+                            issuerRole: row.account.issuerRole,
+                            issuerUri: row.account.issuerUri,
+                        };
+                    })
             );
         }
     };
 
-    const onClickAdd = async (newBatchName: string) => {
-        if (wallet) {
+    const onClickGenerate = async () => {
+        if (wallet && batchKey) {
             const elClient = await initElearnClient(wallet as any);
-            const [walletManagerProofPDA, _] = await elClient.findManagerProofPDA(wallet.publicKey);
 
-            const { txSig } = await elClient.createBatch(
+            const { txSig } = await elClient.createCertificate(
                 wallet.publicKey,
-                walletManagerProofPDA,
-                newBatchName
+                new PublicKey(batchKey),
+                _.isEmpty(newCertificate.studentKey) ? wallet.publicKey : new PublicKey(newCertificate.studentKey),
+                parseInt(newCertificate.completeDate),
+                newCertificate.studentName,
+                newCertificate.studentGrade,
+                newCertificate.courseName,
+                newCertificate.schoolName,
+                newCertificate.schoolUri,
+                newCertificate.issuerName,
+                newCertificate.issuerRole,
+                newCertificate.issuerUri
             );
 
             console.log(txSig);
 
             await conn.confirmTransaction(txSig, 'max');
-            populateBatchTable();
-            setNewBatchName('');
+            populateCertTable();
+            setNewCertificate({
+                studentKey: '',
+                completeDate: '',
+                studentName: '',
+                studentGrade: '',
+                courseName: '',
+                schoolName: '',
+                schoolUri: '',
+                issuerName: '',
+                issuerRole: '',
+                issuerUri: '',
+            });
         }
+    };
+
+    const truncate = (str: string) => {
+        return str.length > 8 ? str.substring(0, 7) + '...' : str;
     };
 
     return (
         <div>
             <div className="flex flex-col pt-6 px-6">
-                <h3>Manage and create batches</h3>
+                <h3>View and create certificates</h3>
                 <p>
-                    Each batch contains its own certificates, managers are required to create a batch to generate
-                    certificates within
+                    Click on the view cells to view individual certificate or fill up required fields to generate new
+                    certificate
                 </p>
                 <div className="block w-full overflow-x-auto mt-5">
                     <table className="border-separate w-full border border-slate-500 bg-slate-800 text-sm shadow-sm">
                         <thead className="bg-slate-700">
                             <tr>
                                 <th className="px-4 border border-slate-600 font-semibold p-4 text-slate-200 text-left">
-                                    #
+                                    ID
                                 </th>
 
                                 <th className="px-4 border border-slate-600 font-semibold p-4 text-slate-200 text-left">
-                                    Batch ID
+                                    Course Name
                                 </th>
                                 <th className="px-4 border border-slate-600 font-semibold p-4 text-slate-200 text-left">
-                                    Batch Name
+                                    Student Name
+                                </th>
+                                <th className="px-4 border border-slate-600 font-semibold p-4 text-slate-200 text-left">
+                                    Recognition
                                 </th>
                                 <th className="px-4 border border-slate-600 font-semibold p-4 text-slate-200 text-left"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {batchList
-                                ?.sort((row) => Number(row.batchNum))
-                                .reverse()
-                                .map((batch, index) => {
-                                    return (
-                                        <tr className="text-gray-500" key={index}>
-                                            <td className="border border-slate-700 p-4 text-slate-400">
-                                                {Number(batch.batchNum)}
-                                            </td>
-                                            <td className="border border-slate-700 p-4 text-slate-400">
-                                                {batch.managerKey.toBase58()}
-                                            </td>
-                                            <td className="border border-slate-700 p-4 text-slate-400">
-                                                {batch.batchName}
-                                            </td>
-                                            <td className="text-center text-sky-500 font-semibold border border-slate-700 px-4 text-slate-400 cursor-pointer hover:bg-slate-850/50">
-                                                Manage
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
+                            {certList?.map((cert, index) => {
+                                return (
+                                    <tr className="text-gray-500" key={index}>
+                                        <td className="flex border border-slate-700 p-4 text-slate-400">
+                                            <div className="w-full">{truncate(cert.certificatePDA.toBase58())}</div>
+
+                                            <svg
+                                                onClick={() =>
+                                                    navigator.clipboard.writeText(cert.certificatePDA.toBase58())
+                                                }
+                                                className="w-5 h-5 cursor-pointer text-gray-400 hover:text-gray-500"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                                                <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                                            </svg>
+                                        </td>
+                                        <td className="border border-slate-700 p-4 text-slate-400">
+                                            {cert.courseName}
+                                        </td>
+                                        <td className="border border-slate-700 p-4 text-slate-400">
+                                            {cert.studentName}
+                                        </td>
+                                        <td className="border border-slate-700 p-4 text-slate-400">
+                                            {cert.studentGrade}
+                                        </td>
+                                        <td className="text-center text-sky-500 font-semibold border border-slate-700 px-4 text-slate-400 cursor-pointer hover:bg-slate-850/50">
+                                            View
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
-                <div className="flex items-center mt-10">
-                    <label className="sr-only">Search</label>
-                    <div className="relative w-full">
-                        <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                            <svg
-                                className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    clipRule="evenodd"
-                                    d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-5L9 4H4zm7 5a1 1 0 00-2 0v1H8a1 1 0 000 2h1v1a1 1 0 002 0v-1h1a1 1 0 000-2h-1V9z"
-                                    fillRule="evenodd"
-                                ></path>
-                            </svg>
+                <div className="w-full mt-10">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> Course Name</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="INTRODUCTION TO BLOCKCHAIN"
+                                    value={newCertificate.courseName}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, courseName: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
                         </div>
-                        <input
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="New batch name..."
-                            value={newBatchName}
-                            onChange={(e) => setNewBatchName(e.target.value)}
-                            required
-                        />
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> Student Name</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Jane Doe"
+                                    value={newCertificate.studentName}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, studentName: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> Student Recognition</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Distinction"
+                                    value={newCertificate.studentGrade}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, studentGrade: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> Student Wallet</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="44FmhNvpmafkgWwShR3ErTgRWCYrBuPkQPLdmaMLctPC"
+                                    value={newCertificate.studentKey}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, studentKey: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> Issuer Name</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Raj Anatoly"
+                                    value={newCertificate.issuerName}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, issuerName: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> Issuer Role</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="DIRECTOR"
+                                    value={newCertificate.issuerRole}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, issuerRole: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> Issuer Signature URL</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="https://metacamp.so/signature.png"
+                                    value={newCertificate.issuerUri}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, issuerUri: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> Completion Date</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="1658448000"
+                                    value={newCertificate.completeDate}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, completeDate: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> School Name</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Metacamp Academy"
+                                    value={newCertificate.schoolName}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, schoolName: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> School Logo URL</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="https://metacamp.so/logo.png"
+                                    value={newCertificate.schoolUri}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, schoolUri: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p className="hidden md:block">&nbsp;</p>
+                                <button
+                                    onClick={() => onClickGenerate()}
+                                    className="inline-block items-center rounded-lg bg-sky-300 py-2.5 px-3 text-sm font-semibold text-slate-900 hover:bg-sky-200 active:bg-sky-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300/50"
+                                >
+                                    Generate
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <button
-                        onClick={() => onClickAdd(newBatchName)}
-                        className="w-1/6 inline-block items-center rounded-lg bg-sky-300 py-2.5 px-3 ml-2 text-sm font-semibold text-slate-900 hover:bg-sky-200 active:bg-sky-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300/50"
-                    >
-                        Create
-                    </button>
                 </div>
             </div>
         </div>

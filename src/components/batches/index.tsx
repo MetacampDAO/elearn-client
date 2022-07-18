@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { conn, initElearnClient } from '../../client/common/init';
 import { BatchAcc } from '../../interface/batch';
+import { Link } from 'react-router-dom';
 
 const Batches = () => {
     const wallet = useAnchorWallet();
@@ -19,16 +20,19 @@ const Batches = () => {
             const elClient = await initElearnClient();
             const allBatchManagerAcc = await elClient.findAllBatchAccByManagerKey(wallet.publicKey);
             setBatchList(
-                allBatchManagerAcc.map((row, _) => {
-                    return {
-                        batchPDA: row.publicKey,
-                        managerKey: row.account.managerKey,
-                        certificateCount: row.account.certificateCount,
-                        batchNum: row.account.batchNum,
-                        batchName: row.account.batchName,
-                        batchBump: row.account.batchBump,
-                    };
-                })
+                allBatchManagerAcc
+                    .sort((row) => Number(row.account.batchNum))
+                    .reverse()
+                    .map((row, _) => {
+                        return {
+                            batchPDA: row.publicKey,
+                            managerKey: row.account.managerKey,
+                            certificateCount: row.account.certificateCount,
+                            batchNum: row.account.batchNum,
+                            batchName: row.account.batchName,
+                            batchBump: row.account.batchBump,
+                        };
+                    })
             );
         }
     };
@@ -38,11 +42,7 @@ const Batches = () => {
             const elClient = await initElearnClient(wallet as any);
             const [walletManagerProofPDA, _] = await elClient.findManagerProofPDA(wallet.publicKey);
 
-            const { txSig } = await elClient.createBatch(
-                wallet.publicKey,
-                walletManagerProofPDA,
-                newBatchName
-            );
+            const { txSig } = await elClient.createBatch(wallet.publicKey, walletManagerProofPDA, newBatchName);
 
             console.log(txSig);
 
@@ -78,27 +78,24 @@ const Batches = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {batchList
-                                ?.sort((row) => Number(row.batchNum))
-                                .reverse()
-                                .map((batch, index) => {
-                                    return (
-                                        <tr className="text-gray-500" key={index}>
-                                            <td className="border border-slate-700 p-4 text-slate-400">
-                                                {Number(batch.batchNum)}
-                                            </td>
-                                            <td className="border border-slate-700 p-4 text-slate-400">
-                                                {batch.managerKey.toBase58()}
-                                            </td>
-                                            <td className="border border-slate-700 p-4 text-slate-400">
-                                                {batch.batchName}
-                                            </td>
-                                            <td className="text-center text-sky-500 font-semibold border border-slate-700 px-4 text-slate-400 cursor-pointer hover:bg-slate-850/50">
-                                                Manage
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
+                            {batchList?.map((batch, index) => {
+                                return (
+                                    <tr className="text-gray-500" key={index}>
+                                        <td className="border border-slate-700 p-4 text-slate-400">
+                                            {Number(batch.batchNum)}
+                                        </td>
+                                        <td className="border border-slate-700 p-4 text-slate-400">
+                                            {batch.batchPDA.toBase58()}
+                                        </td>
+                                        <td className="border border-slate-700 p-4 text-slate-400">
+                                            {batch.batchName}
+                                        </td>
+                                        <td className="text-center text-sky-500 font-semibold border border-slate-700 px-4 text-slate-400 cursor-pointer hover:bg-slate-850/50">
+                                            <Link to={`/batch/${batch.batchPDA.toBase58()}`}>Manage</Link>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>

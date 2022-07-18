@@ -6,6 +6,7 @@ import Users from './components/users';
 import NavBar from './components/common/NavBar';
 import Main from './components/common/Main';
 import Batches from './components/batches';
+import Batch from './components/batch';
 
 export const App: FC = () => {
     return (
@@ -18,7 +19,7 @@ export const App: FC = () => {
                             <Join />
                         } /> */}
                         <Route path='/batch/:batchKey' element={
-                            <Batches />
+                            <Batch />
                         } />
                         <Route path='/batches' element={
                             <Batches />

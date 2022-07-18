@@ -123,6 +123,18 @@ export class ElearnClient extends AccountUtils {
     return this.elearnProgram.account.batch.all(filter);
   }
 
+  async findAllCertificateAccByBatchPDA(batchPDA: PublicKey){
+    const filter = [
+      {
+        memcmp: {
+          offset: 8, //prepend for anchor's discriminator
+          bytes: batchPDA.toBase58(),
+        }
+      }
+    ];
+    return this.elearnProgram.account.certificate.all(filter);
+  }
+
   // --------------------------------------- elearn ixs
 
   async initializeManager (
