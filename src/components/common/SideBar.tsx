@@ -1,7 +1,9 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 const SideBar = () => {
+    const location = useLocation();
+
     return (
         <aside
             id="sidebar"
@@ -15,7 +17,9 @@ const SideBar = () => {
                             <li>
                                 <Link
                                     to="/certificate"
-                                    className="text-base font-normal rounded-lg flex items-center p-2 text-gray-300 hover:text-gray-900 hover:bg-gray-100 group"
+                                    className={`text-base font-normal rounded-lg flex items-center p-2 hover:text-gray-900 hover:bg-gray-100 group ${
+                                        location.pathname == '/certificate' ? 'text-sky-400' : 'text-gray-300'
+                                    }`}
                                 >
                                     <svg
                                         className="w-6 h-6 flex-shrink-0 group-hover:text-gray-900 transition duration-75"
@@ -36,7 +40,9 @@ const SideBar = () => {
                             <li>
                                 <Link
                                     to="/batches"
-                                    className="text-base font-normal rounded-lg flex items-center p-2 text-gray-300 hover:text-gray-900 hover:bg-gray-100 group"
+                                    className={`text-base font-normal rounded-lg flex items-center p-2 hover:text-gray-900 hover:bg-gray-100 group ${
+                                        location.pathname == '/batches' ? 'text-sky-400' : 'text-gray-300'
+                                    }`}
                                 >
                                     <svg
                                         className="w-6 h-6 flex-shrink-0 group-hover:text-gray-900 transition duration-75"
@@ -52,7 +58,9 @@ const SideBar = () => {
                             <li>
                                 <Link
                                     to="/users"
-                                    className="text-base font-normal rounded-lg flex items-center p-2 text-gray-300 hover:text-gray-900 hover:bg-gray-100 group"
+                                    className={`text-base font-normal rounded-lg flex items-center p-2 hover:text-gray-900 hover:bg-gray-100 group ${
+                                        location.pathname == '/users' ? 'text-sky-400' : 'text-gray-300'
+                                    }`}
                                 >
                                     <svg
                                         className="w-6 h-6 flex-shrink-0 group-hover:text-gray-900 transition duration-75"
