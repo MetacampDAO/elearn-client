@@ -111,6 +111,18 @@ export class ElearnClient extends AccountUtils {
     return await this.elearnProgram.account.manager.all();
   }
 
+  async findAllBatchAccByManagerKey(managerKey: PublicKey){
+    const filter = [
+      {
+        memcmp: {
+          offset: 8, //prepend for anchor's discriminator
+          bytes: managerKey.toBase58(),
+        }
+      }
+    ];
+    return this.elearnProgram.account.batch.all(filter);
+  }
+
   // --------------------------------------- elearn ixs
 
   async initializeManager (
