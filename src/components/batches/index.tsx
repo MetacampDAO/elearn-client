@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { conn, initElearnClient } from '../../client/common/init';
-import { Batch } from '../../interface/batch';
+import { BatchAcc } from '../../interface/batch';
 
 const Batches = () => {
     const wallet = useAnchorWallet();
     const [newBatchName, setNewBatchName] = useState<string>('');
-    const [batchList, setBatchList] = useState<Batch[]>();
+    const [batchList, setBatchList] = useState<BatchAcc[]>();
 
     useEffect(() => {
         (async () => {

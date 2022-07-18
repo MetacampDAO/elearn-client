@@ -1,7 +1,7 @@
 import { BN } from "@project-serum/anchor";
 import { PublicKey } from "@solana/web3.js";
 
-export interface Batch {
+export interface BatchAcc {
   batchPDA: PublicKey,
   managerKey: PublicKey,
   certificateCount: BN,
