@@ -1,0 +1,677 @@
+export type Elearn = {
+  "version": "0.1.0",
+  "name": "elearn",
+  "instructions": [
+    {
+      "name": "initializeManager",
+      "accounts": [
+        {
+          "name": "master",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "managerProof",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "managerBump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "addManager",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "adminProof",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "managerKey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "managerProof",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "managerBump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "modifyManager",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "adminProof",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "managerKey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "managerProof",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "targetPermissions",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "createBatch",
+      "accounts": [
+        {
+          "name": "manager",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "managerProof",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "batch",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "batchName",
+          "type": "string"
+        },
+        {
+          "name": "batchBump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "createCertificate",
+      "accounts": [
+        {
+          "name": "manager",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "managerProof",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "batch",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "certificate",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "studentKey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "completeDate",
+          "type": "u64"
+        },
+        {
+          "name": "certificateBump",
+          "type": "u8"
+        },
+        {
+          "name": "studentName",
+          "type": "string"
+        },
+        {
+          "name": "studentGrade",
+          "type": "string"
+        },
+        {
+          "name": "courseName",
+          "type": "string"
+        },
+        {
+          "name": "schoolName",
+          "type": "string"
+        },
+        {
+          "name": "schoolUri",
+          "type": "string"
+        },
+        {
+          "name": "issuerName",
+          "type": "string"
+        },
+        {
+          "name": "issuerRole",
+          "type": "string"
+        },
+        {
+          "name": "issuerUri",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "batch",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "managerKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "certificateCount",
+            "type": "u64"
+          },
+          {
+            "name": "batchNum",
+            "type": "u64"
+          },
+          {
+            "name": "batchName",
+            "type": "string"
+          },
+          {
+            "name": "batchBump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "certificate",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "batchPda",
+            "type": "publicKey"
+          },
+          {
+            "name": "managerKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "studentKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "completeDate",
+            "type": "u64"
+          },
+          {
+            "name": "certificateNum",
+            "type": "u64"
+          },
+          {
+            "name": "certificateBump",
+            "type": "u8"
+          },
+          {
+            "name": "studentName",
+            "type": "string"
+          },
+          {
+            "name": "studentGrade",
+            "type": "string"
+          },
+          {
+            "name": "courseName",
+            "type": "string"
+          },
+          {
+            "name": "schoolName",
+            "type": "string"
+          },
+          {
+            "name": "schoolUri",
+            "type": "string"
+          },
+          {
+            "name": "issuerName",
+            "type": "string"
+          },
+          {
+            "name": "issuerRole",
+            "type": "string"
+          },
+          {
+            "name": "issuerUri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "manager",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "managerKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "batchCount",
+            "type": "u64"
+          },
+          {
+            "name": "certificateCount",
+            "type": "u128"
+          },
+          {
+            "name": "permissionType",
+            "type": "u8"
+          },
+          {
+            "name": "managerBump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+};
+
+export const IDL: Elearn = {
+  "version": "0.1.0",
+  "name": "elearn",
+  "instructions": [
+    {
+      "name": "initializeManager",
+      "accounts": [
+        {
+          "name": "master",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "managerProof",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "managerBump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "addManager",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "adminProof",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "managerKey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "managerProof",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "managerBump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "modifyManager",
+      "accounts": [
+        {
+          "name": "admin",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "adminProof",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "managerKey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "managerProof",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "targetPermissions",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "createBatch",
+      "accounts": [
+        {
+          "name": "manager",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "managerProof",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "batch",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "batchName",
+          "type": "string"
+        },
+        {
+          "name": "batchBump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "createCertificate",
+      "accounts": [
+        {
+          "name": "manager",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "managerProof",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "batch",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "certificate",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "studentKey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "completeDate",
+          "type": "u64"
+        },
+        {
+          "name": "certificateBump",
+          "type": "u8"
+        },
+        {
+          "name": "studentName",
+          "type": "string"
+        },
+        {
+          "name": "studentGrade",
+          "type": "string"
+        },
+        {
+          "name": "courseName",
+          "type": "string"
+        },
+        {
+          "name": "schoolName",
+          "type": "string"
+        },
+        {
+          "name": "schoolUri",
+          "type": "string"
+        },
+        {
+          "name": "issuerName",
+          "type": "string"
+        },
+        {
+          "name": "issuerRole",
+          "type": "string"
+        },
+        {
+          "name": "issuerUri",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "batch",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "managerKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "certificateCount",
+            "type": "u64"
+          },
+          {
+            "name": "batchNum",
+            "type": "u64"
+          },
+          {
+            "name": "batchName",
+            "type": "string"
+          },
+          {
+            "name": "batchBump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "certificate",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "batchPda",
+            "type": "publicKey"
+          },
+          {
+            "name": "managerKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "studentKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "completeDate",
+            "type": "u64"
+          },
+          {
+            "name": "certificateNum",
+            "type": "u64"
+          },
+          {
+            "name": "certificateBump",
+            "type": "u8"
+          },
+          {
+            "name": "studentName",
+            "type": "string"
+          },
+          {
+            "name": "studentGrade",
+            "type": "string"
+          },
+          {
+            "name": "courseName",
+            "type": "string"
+          },
+          {
+            "name": "schoolName",
+            "type": "string"
+          },
+          {
+            "name": "schoolUri",
+            "type": "string"
+          },
+          {
+            "name": "issuerName",
+            "type": "string"
+          },
+          {
+            "name": "issuerRole",
+            "type": "string"
+          },
+          {
+            "name": "issuerUri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "manager",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "managerKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "batchCount",
+            "type": "u64"
+          },
+          {
+            "name": "certificateCount",
+            "type": "u128"
+          },
+          {
+            "name": "permissionType",
+            "type": "u8"
+          },
+          {
+            "name": "managerBump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+};
