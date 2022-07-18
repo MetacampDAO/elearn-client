@@ -14,7 +14,7 @@ const SideBar = () => {
                         <ul className="space-y-2 pb-1">
                             <li>
                                 <Link
-                                    to="/cert"
+                                    to="/certificate"
                                     className="text-base font-normal rounded-lg flex items-center p-2 text-gray-300 hover:text-gray-900 hover:bg-gray-100 group"
                                 >
                                     <svg

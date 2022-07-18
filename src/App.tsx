@@ -7,6 +7,8 @@ import NavBar from './components/common/NavBar';
 import Main from './components/common/Main';
 import Batches from './components/batches';
 import Batch from './components/batch';
+import Certificate from './components/certificate';
+import Search from './components/search';
 
 export const App: FC = () => {
     return (
@@ -18,6 +20,12 @@ export const App: FC = () => {
                         {/* <Route path='/join' element={
                             <Join />
                         } /> */}
+                        <Route path='/certificate/:certPda' element={
+                            <Certificate />
+                        } />
+                        <Route path='/certificate' element={
+                            <Search />
+                        } />
                         <Route path='/batch/:batchKey' element={
                             <Batch />
                         } />

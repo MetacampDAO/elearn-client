@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { conn, initElearnClient } from '../../client/common/init';
 import { CertificateAcc } from '../../interface/certificate';
 import { PublicKey } from '@solana/web3.js';
@@ -162,7 +162,7 @@ const Batch = () => {
                                             {cert.studentGrade}
                                         </td>
                                         <td className="text-center text-sky-500 font-semibold border border-slate-700 px-4 text-slate-400 cursor-pointer hover:bg-slate-850/50">
-                                            View
+                                            <Link to={`/certificate/${cert.certificatePDA.toBase58()}`}>View</Link>
                                         </td>
                                     </tr>
                                 );
