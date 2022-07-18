@@ -41,10 +41,6 @@ export class ElearnClient extends AccountUtils {
         programId,
         this.provider
       );
-    } else {
-      //means running inside test suite
-      // @ts-ignore
-      this.elearnProgram = anchor.workspace.Elearn as Program<Elearn>;
     }
   }
 
