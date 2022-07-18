@@ -57,8 +57,8 @@ const Batches = () => {
             <div className="flex flex-col pt-6 px-6">
                 <h3>Manage and create batches</h3>
                 <p>
-                    Each batch contains its own certificates, managers are required to create a batch to generate
-                    certificates within
+                    Each batch contains its own certificates, approved managers are required to create a batch to generate
+                    certificates within. <a href="mailto:team@metacamp.so" className='text-sky-300'>Reach out to us</a> for manager membership enquiries.
                 </p>
                 <div className="block w-full overflow-x-auto mt-5">
                     <table className="border-separate w-full border border-slate-500 bg-slate-800 text-sm shadow-sm">

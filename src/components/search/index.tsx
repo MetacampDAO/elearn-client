@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 const Search = () => {
     const [certificateId, setCertificateId] = useState<string>();
     return (
-        <div className="flex flex-col md:pt-6 px-4 md:px-20">
-            <h3>Modify managers permissions</h3>
-            <p>Click on individual users' permission cells to toggle on and off</p>
+        <div className="flex flex-col pt-6 px-6">
+            <h3>Search for certificate</h3>
+            <p>Input the certificate ID in the input below and click search</p>
             <div className="w-full md:w-7/12 flex items-center mt-6">
                 <label className="sr-only">Search</label>
                 <div className="relative w-full">
