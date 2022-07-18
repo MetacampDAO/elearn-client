@@ -54,6 +54,7 @@ const NavBar = () => {
                                 <li className="my-3">
                                     <Link
                                         to="/certificate"
+                                        onClick={() => setIsNavOpen(false)} 
                                         className={`text-base font-normal rounded-lg flex items-center p-2 hover:text-gray-900 hover:bg-gray-100 group ${
                                             location.pathname == '/certificate' ? 'text-sky-400' : 'text-gray-300'
                                         }`}
@@ -77,6 +78,7 @@ const NavBar = () => {
                                 <li className="my-3">
                                     <Link
                                         to="/batches"
+                                        onClick={() => setIsNavOpen(false)} 
                                         className={`text-base font-normal rounded-lg flex items-center p-2 hover:text-gray-900 hover:bg-gray-100 group ${
                                             location.pathname == '/batches' ? 'text-sky-400' : 'text-gray-300'
                                         }`}
@@ -96,6 +98,7 @@ const NavBar = () => {
                                     <li className="my-3">
                                         <Link
                                             to="/users"
+                                            onClick={() => setIsNavOpen(false)} 
                                             className={`text-base font-normal rounded-lg flex items-center p-2 hover:text-gray-900 hover:bg-gray-100 group ${
                                                 location.pathname == '/users' ? 'text-sky-400' : 'text-gray-300'
                                             }`}
