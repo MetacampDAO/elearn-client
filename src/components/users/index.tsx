@@ -13,23 +13,29 @@ const Users = () => {
         (async () => {
             populateUserTable();
         })();
-    }, []);
+    }, [wallet]);
 
     const populateUserTable = async () => {
-        const elClient = await initElearnClient();
-        const allManagerProofAcc = await elClient.findAllManagerProofAcc();
-        setUserList(
-            allManagerProofAcc.map((row, _) => {
-                return {
-                    managerProofPDA: row.publicKey,
-                    managerKey: row.account.managerKey,
-                    batchCount: row.account.batchCount,
-                    certificateCount: row.account.certificateCount,
-                    permissionType: row.account.permissionType,
-                    managerBump: row.account.managerBump,
-                };
-            })
-        );
+        if (wallet) {
+            const elClient = await initElearnClient();
+            const [managerProofPDA, _] = await elClient.findManagerProofPDA(wallet.publicKey);
+            const managerProofAcc = await elClient.fetchManagerProofAcc(managerProofPDA);
+            if ((managerProofAcc.permissionType & (1<<3)) > 0) {
+                const allManagerProofAcc = await elClient.findAllManagerProofAcc();
+                setUserList(
+                    allManagerProofAcc.map((row, _) => {
+                        return {
+                            managerProofPDA: row.publicKey,
+                            managerKey: row.account.managerKey,
+                            batchCount: row.account.batchCount,
+                            certificateCount: row.account.certificateCount,
+                            permissionType: row.account.permissionType,
+                            managerBump: row.account.managerBump,
+                        };
+                    })
+                );
+            }
+        }
     };
 
     const onClickAdd = async (newManagerKeyStr: string) => {

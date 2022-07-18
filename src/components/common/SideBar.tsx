@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
+import { initElearnClient } from '../../client/common/init';
 
 const SideBar = () => {
+    const wallet = useAnchorWallet();
     const location = useLocation();
+    const [permissionType, setPermissionType] = useState<number>(0);
+
+    useEffect(() => {
+        (async () => {
+            if (wallet) {
+                try {
+                    const elClient = await initElearnClient();
+                    const [managerProofPDA, _] = await elClient.findManagerProofPDA(wallet.publicKey);
+                    const managerProofAcc = await elClient.fetchManagerProofAcc(managerProofPDA);
+                    setPermissionType(managerProofAcc.permissionType);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        })();
+    }, [wallet]);
 
     return (
         <aside
@@ -55,24 +74,28 @@ const SideBar = () => {
                                     <span className="ml-3">Manage Batches</span>
                                 </Link>
                             </li>
-                            <li>
-                                <Link
-                                    to="/users"
-                                    className={`text-base font-normal rounded-lg flex items-center p-2 hover:text-gray-900 hover:bg-gray-100 group ${
-                                        location.pathname == '/users' ? 'text-sky-400' : 'text-gray-300'
-                                    }`}
-                                >
-                                    <svg
-                                        className="w-6 h-6 flex-shrink-0 group-hover:text-gray-900 transition duration-75"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg"
+                            {(permissionType & (1 << 3)) > 0 ? (
+                                <li>
+                                    <Link
+                                        to="/users"
+                                        className={`text-base font-normal rounded-lg flex items-center p-2 hover:text-gray-900 hover:bg-gray-100 group ${
+                                            location.pathname == '/users' ? 'text-sky-400' : 'text-gray-300'
+                                        }`}
                                     >
-                                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
-                                    </svg>
-                                    <span className="ml-3">Manage Users</span>
-                                </Link>
-                            </li>
+                                        <svg
+                                            className="w-6 h-6 flex-shrink-0 group-hover:text-gray-900 transition duration-75"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                                        </svg>
+                                        <span className="ml-3">Manage Users</span>
+                                    </Link>
+                                </li>
+                            ) : (
+                                <></>
+                            )}
                         </ul>
                     </div>
                 </div>
