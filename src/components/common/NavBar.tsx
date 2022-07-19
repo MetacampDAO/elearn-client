@@ -117,7 +117,7 @@ const NavBar = () => {
                                 ) : (
                                     <></>
                                 )}
-                                <li className="my-3">
+                                <li className="my-3 flex justify-center">
                                     <WalletMultiButton className="!bg-gradient-to-r from-sky-500 via-blue-600 !to-purple-700 hover:from-sky-400 !rounded-lg" />
                                 </li>
                             </ul>
