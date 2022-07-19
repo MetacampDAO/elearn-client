@@ -118,7 +118,7 @@ const NavBar = () => {
                                     <></>
                                 )}
                                 <li className="my-3">
-                                    <WalletMultiButton />
+                                    <WalletMultiButton className="!bg-gradient-to-r from-sky-500 via-blue-600 !to-purple-700 hover:from-sky-400 !rounded-lg" />
                                 </li>
                             </ul>
                         </div>
@@ -147,7 +147,7 @@ const NavBar = () => {
                         </button>
                     </div>
                     <div className="hidden md:block flex items-center">
-                        <WalletMultiButton />
+                        <WalletMultiButton className="!bg-gradient-to-r from-sky-500 via-blue-600 !to-purple-700 hover:from-sky-400 !rounded-lg" />
                     </div>
                 </div>
             </div>
