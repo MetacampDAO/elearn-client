@@ -8,7 +8,8 @@ const ELEARN_PROG_ID = new PublicKey(
   '9UZhEPPrzXSAScvZ2cDF1GgYGJTZrAcPUEwNGLvvu9Pr'
 );
 
-export const conn: Connection = new Connection("https://api.devnet.solana.com");
+export const conn: Connection = new Connection("https://ssc-dao.genesysgo.net/");
+// export const conn: Connection = new Connection("https://api.devnet.solana.com");
 
 export async function  initElearnClient(
   wallet?: NodeWallet
