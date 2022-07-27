@@ -83,6 +83,9 @@ const Certificate = () => {
 
     return (
         <div>
+            <div className="absolute -mt-96" style={{fontFamily: "League Spartan", fontWeight: 600}}>.</div>
+            <div className="absolute -mt-96" style={{fontFamily: "League Spartan", fontWeight: 500}}>.</div>
+            <div className="absolute -mt-96" style={{fontFamily: "Montserrat", fontWeight: 300}}>.</div>
             {isLoading && (
                 <div className="flex justify-center items-center" style={{ height: '80vh' }}>
                     <div className="flex flex-row items-center">
