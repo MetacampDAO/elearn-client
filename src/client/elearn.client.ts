@@ -221,7 +221,7 @@ export class ElearnClient extends AccountUtils {
       }).signers(signers)
       .rpc();
 
-    return { txSig };
+    return { txSig, batch};
   }
 
   async createCertificate(
@@ -266,6 +266,6 @@ export class ElearnClient extends AccountUtils {
     }).signers(signers)
     .rpc();
 
-    return { txSig }
+    return { txSig, certificate }
   }
 }

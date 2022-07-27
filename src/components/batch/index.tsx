@@ -23,6 +23,7 @@ const Batch = () => {
         issuerUri: '',
     });
     const [certList, setCertList] = useState<CertificateAcc[]>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         (async () => {
@@ -64,39 +65,48 @@ const Batch = () => {
 
     const onClickGenerate = async () => {
         if (wallet && batchKey) {
-            const elClient = await initElearnClient(wallet as any);
+            setIsLoading(true);
+            try {
+                const elClient = await initElearnClient(wallet as any);
 
-            const { txSig } = await elClient.createCertificate(
-                wallet.publicKey,
-                new PublicKey(batchKey),
-                _.isEmpty(newCertificate.studentKey) ? wallet.publicKey : new PublicKey(newCertificate.studentKey),
-                parseInt(newCertificate.completeDate),
-                newCertificate.studentName,
-                newCertificate.studentGrade,
-                newCertificate.courseName,
-                newCertificate.schoolName,
-                newCertificate.schoolUri,
-                newCertificate.issuerName,
-                newCertificate.issuerRole,
-                newCertificate.issuerUri
-            );
+                const { txSig, certificate } = await elClient.createCertificate(
+                    wallet.publicKey,
+                    new PublicKey(batchKey),
+                    _.isEmpty(newCertificate.studentKey) ? wallet.publicKey : new PublicKey(newCertificate.studentKey),
+                    parseInt(newCertificate.completeDate),
+                    newCertificate.studentName,
+                    newCertificate.studentGrade,
+                    newCertificate.courseName,
+                    newCertificate.schoolName,
+                    newCertificate.schoolUri,
+                    newCertificate.issuerName,
+                    newCertificate.issuerRole,
+                    newCertificate.issuerUri
+                );
 
-            console.log(txSig);
+                console.log(txSig);
 
-            await conn.confirmTransaction(txSig, 'max');
-            populateCertTable();
-            setNewCertificate({
-                studentKey: '',
-                completeDate: '',
-                studentName: '',
-                studentGrade: '',
-                courseName: '',
-                schoolName: '',
-                schoolUri: '',
-                issuerName: '',
-                issuerRole: '',
-                issuerUri: '',
-            });
+                conn.onAccountChange(certificate, () => {
+                    populateCertTable();
+                    setIsLoading(false);
+                });
+
+                setNewCertificate({
+                    studentKey: '',
+                    completeDate: '',
+                    studentName: '',
+                    studentGrade: '',
+                    courseName: '',
+                    schoolName: '',
+                    schoolUri: '',
+                    issuerName: '',
+                    issuerRole: '',
+                    issuerUri: '',
+                });
+            } catch (err) {
+                console.log(err);
+                setIsLoading(false);
+            }
         }
     };
 
@@ -327,9 +337,32 @@ const Batch = () => {
                                 <p className="hidden md:block">&nbsp;</p>
                                 <button
                                     onClick={() => onClickGenerate()}
-                                    className="inline-block items-center rounded-lg bg-sky-300 py-2.5 px-3 text-sm font-semibold text-slate-900 hover:bg-sky-200 active:bg-sky-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300/50"
+                                    className="inline-block flex justify-center items-center rounded-lg bg-sky-300 py-2.5 px-3 text-sm font-semibold text-slate-900 hover:bg-sky-200 active:bg-sky-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300/50"
                                 >
-                                    Generate
+                                    {isLoading ? (
+                                        <svg
+                                            className="animate-spin h-5 w-5"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            ></circle>
+                                            <path
+                                                className="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                            ></path>
+                                        </svg>
+                                    ) : (
+                                        'Generate'
+                                    )}
                                 </button>
                             </div>
                         </div>
