@@ -220,6 +220,10 @@
         "kind": "struct",
         "fields": [
           {
+            "name": "version",
+            "type": "u16"
+          },
+          {
             "name": "managerKey",
             "type": "publicKey"
           },
@@ -247,6 +251,10 @@
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
           {
             "name": "batchPda",
             "type": "publicKey"
@@ -312,6 +320,10 @@
         "kind": "struct",
         "fields": [
           {
+            "name": "version",
+            "type": "u16"
+          },
+          {
             "name": "managerKey",
             "type": "publicKey"
           },
@@ -334,5 +346,8 @@
         ]
       }
     }
-  ]
+  ],
+  "metadata": {
+    "address": "9UZhEPPrzXSAScvZ2cDF1GgYGJTZrAcPUEwNGLvvu9Pr"
+  }
 }

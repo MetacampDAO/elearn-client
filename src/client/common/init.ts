@@ -5,7 +5,7 @@ import { PublicKey } from '@solana/web3.js';
 import * as elIdl from '../data/elearn.json';
 
 const ELEARN_PROG_ID = new PublicKey(
-  '93XaPPTDiKJGfzSKkHHLn3uu8gpgAUXwhVWR74ps8dgJ'
+  '9UZhEPPrzXSAScvZ2cDF1GgYGJTZrAcPUEwNGLvvu9Pr'
 );
 
 export const conn: Connection = new Connection("https://api.devnet.solana.com");

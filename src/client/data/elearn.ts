@@ -220,6 +220,10 @@ export type Elearn = {
         "kind": "struct",
         "fields": [
           {
+            "name": "version",
+            "type": "u16"
+          },
+          {
             "name": "managerKey",
             "type": "publicKey"
           },
@@ -247,6 +251,10 @@ export type Elearn = {
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
           {
             "name": "batchPda",
             "type": "publicKey"
@@ -311,6 +319,10 @@ export type Elearn = {
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
           {
             "name": "managerKey",
             "type": "publicKey"
@@ -559,6 +571,10 @@ export const IDL: Elearn = {
         "kind": "struct",
         "fields": [
           {
+            "name": "version",
+            "type": "u16"
+          },
+          {
             "name": "managerKey",
             "type": "publicKey"
           },
@@ -586,6 +602,10 @@ export const IDL: Elearn = {
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
           {
             "name": "batchPda",
             "type": "publicKey"
@@ -650,6 +670,10 @@ export const IDL: Elearn = {
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
           {
             "name": "managerKey",
             "type": "publicKey"

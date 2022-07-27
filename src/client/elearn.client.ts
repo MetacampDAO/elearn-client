@@ -111,7 +111,7 @@ export class ElearnClient extends AccountUtils {
     const filter = [
       {
         memcmp: {
-          offset: 8, //prepend for anchor's discriminator
+          offset: 8 + 2, //prepend for anchor's discriminator + version
           bytes: managerKey.toBase58(),
         }
       }
@@ -123,7 +123,7 @@ export class ElearnClient extends AccountUtils {
     const filter = [
       {
         memcmp: {
-          offset: 8, //prepend for anchor's discriminator
+          offset: 8 + 2, //prepend for anchor's discriminator + version
           bytes: batchPDA.toBase58(),
         }
       }
