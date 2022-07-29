@@ -6,7 +6,7 @@ const Home = () => {
         <div className="flex flex-col md:pt-6 px-4 md:px-20">
             <div className="not-prose my-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div className="group relative rounded-xl border border-slate-700">
-                    <div className="absolute -inset-px rounded-xl border-2 border-transparent opacity-0 [background:linear-gradient(var(--link-grid-hover-bg,theme(colors.sky.50)),var(--link-grid-hover-bg,theme(colors.sky.50)))_padding-box,linear-gradient(to_top,theme(colors.indigo.400),theme(colors.cyan.400),theme(colors.sky.500))_border-box] group-hover:opacity-100 dark:[--link-grid-hover-bg:theme(colors.slate.800)]"></div>
+                    <div className="absolute -inset-px rounded-xl border-2 border-transparent opacity-0 [background:linear-gradient(var(--link-grid-hover-bg,theme(colors.sky.50)),var(--link-grid-hover-bg,theme(colors.sky.50)))_padding-box,linear-gradient(to_top,theme(colors.indigo.400),theme(colors.cyan.400),theme(colors.sky.500))_border-box] group-hover:opacity-100 [--link-grid-hover-bg:theme(colors.slate.800)]"></div>
                     <div className="relative overflow-hidden rounded-xl p-6">
                         <svg
                             aria-hidden="true"
@@ -53,18 +53,18 @@ const Home = () => {
                                 ></path>
                             </g>
                         </svg>
-                        <h2 className="mt-4 font-display text-base text-slate-900 dark:text-white">
+                        <h2 className="mt-4 font-display text-base text-white">
                             <Link to="/certificate">
                                 <span className="absolute -inset-px rounded-xl"></span>Search Certificate
                             </Link>
                         </h2>
-                        <p className="mt-1 text-sm text-slate-700 dark:text-slate-400">
+                        <p className="mt-1 text-sm text-slate-400">
                             Search individual certificate by providing certificate ID.
                         </p>
                     </div>
                 </div>
                 <div className="group relative rounded-xl border border-slate-700">
-                    <div className="absolute -inset-px rounded-xl border-2 border-transparent opacity-0 [background:linear-gradient(var(--link-grid-hover-bg,theme(colors.sky.50)),var(--link-grid-hover-bg,theme(colors.sky.50)))_padding-box,linear-gradient(to_top,theme(colors.indigo.400),theme(colors.cyan.400),theme(colors.sky.500))_border-box] group-hover:opacity-100 dark:[--link-grid-hover-bg:theme(colors.slate.800)]"></div>
+                    <div className="absolute -inset-px rounded-xl border-2 border-transparent opacity-0 [background:linear-gradient(var(--link-grid-hover-bg,theme(colors.sky.50)),var(--link-grid-hover-bg,theme(colors.sky.50)))_padding-box,linear-gradient(to_top,theme(colors.indigo.400),theme(colors.cyan.400),theme(colors.sky.500))_border-box] group-hover:opacity-100 [--link-grid-hover-bg:theme(colors.slate.800)]"></div>
                     <div className="relative overflow-hidden rounded-xl p-6">
                         <svg
                             aria-hidden="true"
@@ -95,18 +95,18 @@ const Home = () => {
                                 <path d="M2 4v13h2V4H2Zm2-2a2 2 0 0 0-2 2h2V2Zm8 0H4v2h8V2Zm2 2a2 2 0 0 0-2-2v2h2Zm0 13V4h-2v13h2Zm-2 2a2 2 0 0 0 2-2h-2v2Zm-8 0h8v-2H4v2Zm-2-2a2 2 0 0 0 2 2v-2H2Zm16 1v9h2v-9h-2Zm3-3a3 3 0 0 0-3 3h2a1 1 0 0 1 1-1v-2Zm6 0h-6v2h6v-2Zm3 3a3 3 0 0 0-3-3v2a1 1 0 0 1 1 1h2Zm0 9v-9h-2v9h2Zm-3 3a3 3 0 0 0 3-3h-2a1 1 0 0 1-1 1v2Zm-6 0h6v-2h-6v2Zm-3-3a3 3 0 0 0 3 3v-2a1 1 0 0 1-1-1h-2Zm2-18V4h-2v5h2Zm0 0h-2a2 2 0 0 0 2 2V9Zm8 0h-8v2h8V9Zm0 0v2a2 2 0 0 0 2-2h-2Zm0-5v5h2V4h-2Zm0 0h2a2 2 0 0 0-2-2v2Zm-8 0h8V2h-8v2Zm0 0V2a2 2 0 0 0-2 2h2ZM2 25v3h2v-3H2Zm2-2a2 2 0 0 0-2 2h2v-2Zm9 0H4v2h9v-2Zm2 2a2 2 0 0 0-2-2v2h2Zm0 3v-3h-2v3h2Zm-2 2a2 2 0 0 0 2-2h-2v2Zm-9 0h9v-2H4v2Zm-2-2a2 2 0 0 0 2 2v-2H2Z"></path>
                             </g>
                         </svg>
-                        <h2 className="mt-4 font-display text-base text-slate-900 dark:text-white">
+                        <h2 className="mt-4 font-display text-base text-white">
                             <Link to="/batches">
                                 <span className="absolute -inset-px rounded-xl"></span>Manage Batches
                             </Link>
                         </h2>
-                        <p className="mt-1 text-sm text-slate-700 dark:text-slate-400">
+                        <p className="mt-1 text-sm text-slate-400">
                             Create new batches and generate certificates, approved managers only.
                         </p>
                     </div>
                 </div>
                 <div className="group relative rounded-xl border border-slate-700">
-                    <div className="absolute -inset-px rounded-xl border-2 border-transparent opacity-0 [background:linear-gradient(var(--link-grid-hover-bg,theme(colors.sky.50)),var(--link-grid-hover-bg,theme(colors.sky.50)))_padding-box,linear-gradient(to_top,theme(colors.indigo.400),theme(colors.cyan.400),theme(colors.sky.500))_border-box] group-hover:opacity-100 dark:[--link-grid-hover-bg:theme(colors.slate.800)]"></div>
+                    <div className="absolute -inset-px rounded-xl border-2 border-transparent opacity-0 [background:linear-gradient(var(--link-grid-hover-bg,theme(colors.sky.50)),var(--link-grid-hover-bg,theme(colors.sky.50)))_padding-box,linear-gradient(to_top,theme(colors.indigo.400),theme(colors.cyan.400),theme(colors.sky.500))_border-box] group-hover:opacity-100 [--link-grid-hover-bg:theme(colors.slate.800)]"></div>
                     <div className="relative overflow-hidden rounded-xl p-6">
                         <svg
                             aria-hidden="true"
@@ -141,7 +141,7 @@ const Home = () => {
                                 </radialGradient>
                             </defs>
                             <g
-                                className="hidden dark:inline"
+                                className="inline"
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -157,12 +157,12 @@ const Home = () => {
                                 ></path>
                             </g>
                         </svg>
-                        <h2 className="mt-4 font-display text-base text-slate-900 dark:text-white">
+                        <h2 className="mt-4 font-display text-base text-white">
                             <a href="mailto:team@metacamp.so">
                                 <span className="absolute -inset-px rounded-xl"></span>Certification Enquiries
                             </a>
                         </h2>
-                        <p className="mt-1 text-sm text-slate-700 dark:text-slate-400">
+                        <p className="mt-1 text-sm text-slate-400">
                             Keen to issue your own certificates on our platform? Reach out to us!
                         </p>
                     </div>
