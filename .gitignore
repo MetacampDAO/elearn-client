@@ -37,3 +37,5 @@ typings/
 .DS_Store
 
 .parcel-cache
+
+.env
