@@ -21,6 +21,8 @@ export interface CertificateAcc {
 
 export interface GenCertificate {
   studentKey: string,
+  startDate: string,
+  endDate: string,
   completeDate: string,
   studentName: string,
   studentGrade: string,

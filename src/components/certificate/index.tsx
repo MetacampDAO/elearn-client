@@ -11,7 +11,14 @@ const Certificate = () => {
     const [canvasUrl, setCanvasUrl] = useState<string>(image);
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const populateCert = async (recognition: string, studentName: string, courseName: string, date: string) => {
+    const populateCert = async (
+        recognition: string,
+        studentName: string,
+        courseName: string,
+        completeDate: string,
+        startDate: string = completeDate,
+        endDate: string = completeDate
+    ) => {
         const certImg = new Image();
         certImg.src = image;
         await certImg.decode();
@@ -26,20 +33,33 @@ const Certificate = () => {
             return words.split('').join(String.fromCharCode(8202));
         };
         ctx.drawImage(certImg, 0, 0, 2000, 1414);
+
+        let currentY = 450;
         ctx.font = '600 124px League Spartan';
         ctx.fillStyle = '#20201E';
-        ctx.fillText('CERTIFICATE OF', 248, 490);
-        ctx.fillText(recognition, 248, 620);
+        ctx.fillText('CERTIFICATE OF', 248, currentY);
+        currentY += 130;
+        ctx.fillText(recognition, 248, currentY);
+
+        currentY += 86;
         ctx.font = '28px Montserrat';
-        ctx.fillText(spaceWords('This certificate is presented to'), 248, 706);
+        ctx.fillText(spaceWords(`This certificate issued on ${completeDate} is presented to`), 248, currentY);
+
+        currentY += 114;
         ctx.font = '500 84px League Spartan';
-        ctx.fillText(studentName, 248, 820);
+        ctx.fillText(studentName, 248, currentY);
+
+        currentY += 71;
         ctx.font = '28px Montserrat';
-        ctx.fillText(spaceWords('For successfully completing the course'), 248, 891);
+        ctx.fillText(spaceWords('For successfully completing the course'), 248, currentY);
+
+        currentY += 99;
         ctx.font = '500 64px League Spartan';
-        ctx.fillText(courseName, 248, 990);
+        ctx.fillText(courseName, 248, currentY);
+
+        currentY += 70;
         ctx.font = '28px Montserrat';
-        ctx.fillText(spaceWords(`on ${date}`), 248, 1060);
+        ctx.fillText(spaceWords(`Beginning ${startDate} and ending ${endDate}`), 248, currentY);
 
         if (canvasRef.current) setCanvasUrl(canvasRef.current.toDataURL()!);
     };
@@ -82,7 +102,26 @@ const Certificate = () => {
                 };
 
                 const completeDateString = formatDateMilliToString(certAcc.completeDate.toNumber() * 1000);
-                await populateCert(certAcc.studentGrade, certAcc.studentName, certAcc.courseName, completeDateString);
+
+                if (certAcc.startDate && certAcc.endDate) {
+                    const startDateString = formatDateMilliToString(certAcc.startDate.toNumber() * 1000);
+                    const endDateString = formatDateMilliToString(certAcc.endDate.toNumber() * 1000);
+                    await populateCert(
+                        certAcc.studentGrade,
+                        certAcc.studentName,
+                        certAcc.courseName,
+                        completeDateString,
+                        startDateString,
+                        endDateString
+                    );
+                } else {
+                    await populateCert(
+                        certAcc.studentGrade,
+                        certAcc.studentName,
+                        certAcc.courseName,
+                        completeDateString
+                    );
+                }
                 setIsLoading(false);
             }
         })();

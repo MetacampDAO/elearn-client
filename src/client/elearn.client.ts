@@ -1,8 +1,9 @@
 import * as anchor from '@project-serum/anchor';
-import { BN, Idl, Program, AnchorProvider } from '@project-serum/anchor';
+import { BN, Idl, AnchorProvider } from '@project-serum/anchor';
 import { Connection, Keypair, PublicKey, SystemProgram } from '@solana/web3.js';
 import { Elearn } from './data/elearn';
-import { AccountUtils, toBN, isKp,  toByteArray} from './common';
+import { AccountUtils, isKp,  toByteArray} from './common';
+import { u16, struct } from "@solana/buffer-layout";
 
 export class ElearnClient extends AccountUtils {
   // @ts-ignore
@@ -54,10 +55,29 @@ export class ElearnClient extends AccountUtils {
     return this.elearnProgram.account.batch.fetch(batchPDA);
   }
 
-  async fetchCertificateAcc(certficatePDA: PublicKey) {
-    return this.elearnProgram.account.certificate.fetch(certficatePDA);
+  async getCertficateAccVersion(certficatePDA: PublicKey) {
+    interface RawVersion {
+      version: number;
+    }
+    const VersionLayout = struct<RawVersion>([u16("version")]);
+    const accountInfo = await this.provider.connection.getAccountInfo(
+      certficatePDA
+    );
+    if (accountInfo?.data) {
+      return VersionLayout.decode(accountInfo?.data, 8).version;
+    } else {
+      return 0;
+    }
   }
 
+  async fetchCertificateAcc(certficatePDA: PublicKey) {
+    const version = await this.getCertficateAccVersion(certficatePDA);
+    if (version === 0) {
+      return this.elearnProgram.account.certificate.fetch(certficatePDA);
+    } else {
+      return this.elearnProgram.account.certificateV1.fetch(certficatePDA);
+    }
+  }
   // --------------------------------------- find PDA adsdresses
 
   async findManagerProofPDA(managerKey: PublicKey) {
@@ -128,7 +148,12 @@ export class ElearnClient extends AccountUtils {
         }
       }
     ];
-    return this.elearnProgram.account.certificate.all(filter);
+
+    const filteredCertificatesV0 = await this.elearnProgram.account.certificate.all(filter);
+    const filteredCertificatesV1 = await this.elearnProgram.account.certificateV1.all(filter);
+    const filteredCertificates = [...filteredCertificatesV0, ...filteredCertificatesV1];
+
+    return filteredCertificates;
   }
 
   // --------------------------------------- elearn ixs
@@ -228,6 +253,8 @@ export class ElearnClient extends AccountUtils {
     manager: PublicKey| Keypair,
     batch: PublicKey,
     studentKey: PublicKey, 
+    startDate: number,
+    endDate: number,
     completeDate: number,
     studentName: string,
     studentGrade: string,
@@ -246,6 +273,8 @@ export class ElearnClient extends AccountUtils {
     const [certificate, certificateBump] = await this.findNewCertificatePDA(batch);
 
     const txSig = await this.elearnProgram.methods.createCertificate(
+      new BN(startDate),
+      new BN(endDate),
       new BN(completeDate),
       certificateBump,
       studentName,

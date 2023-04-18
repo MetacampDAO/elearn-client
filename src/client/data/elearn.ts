@@ -171,6 +171,14 @@ export type Elearn = {
       ],
       "args": [
         {
+          "name": "startDate",
+          "type": "u64"
+        },
+        {
+          "name": "endDate",
+          "type": "u64"
+        },
+        {
           "name": "completeDate",
           "type": "u64"
         },
@@ -266,6 +274,82 @@ export type Elearn = {
           {
             "name": "studentKey",
             "type": "publicKey"
+          },
+          {
+            "name": "completeDate",
+            "type": "u64"
+          },
+          {
+            "name": "certificateNum",
+            "type": "u64"
+          },
+          {
+            "name": "certificateBump",
+            "type": "u8"
+          },
+          {
+            "name": "studentName",
+            "type": "string"
+          },
+          {
+            "name": "studentGrade",
+            "type": "string"
+          },
+          {
+            "name": "courseName",
+            "type": "string"
+          },
+          {
+            "name": "schoolName",
+            "type": "string"
+          },
+          {
+            "name": "schoolUri",
+            "type": "string"
+          },
+          {
+            "name": "issuerName",
+            "type": "string"
+          },
+          {
+            "name": "issuerRole",
+            "type": "string"
+          },
+          {
+            "name": "issuerUri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "certificateV1",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
+          {
+            "name": "batchPda",
+            "type": "publicKey"
+          },
+          {
+            "name": "managerKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "studentKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "startDate",
+            "type": "u64"
+          },
+          {
+            "name": "endDate",
+            "type": "u64"
           },
           {
             "name": "completeDate",
@@ -522,6 +606,14 @@ export const IDL: Elearn = {
       ],
       "args": [
         {
+          "name": "startDate",
+          "type": "u64"
+        },
+        {
+          "name": "endDate",
+          "type": "u64"
+        },
+        {
           "name": "completeDate",
           "type": "u64"
         },
@@ -617,6 +709,82 @@ export const IDL: Elearn = {
           {
             "name": "studentKey",
             "type": "publicKey"
+          },
+          {
+            "name": "completeDate",
+            "type": "u64"
+          },
+          {
+            "name": "certificateNum",
+            "type": "u64"
+          },
+          {
+            "name": "certificateBump",
+            "type": "u8"
+          },
+          {
+            "name": "studentName",
+            "type": "string"
+          },
+          {
+            "name": "studentGrade",
+            "type": "string"
+          },
+          {
+            "name": "courseName",
+            "type": "string"
+          },
+          {
+            "name": "schoolName",
+            "type": "string"
+          },
+          {
+            "name": "schoolUri",
+            "type": "string"
+          },
+          {
+            "name": "issuerName",
+            "type": "string"
+          },
+          {
+            "name": "issuerRole",
+            "type": "string"
+          },
+          {
+            "name": "issuerUri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "certificateV1",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
+          {
+            "name": "batchPda",
+            "type": "publicKey"
+          },
+          {
+            "name": "managerKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "studentKey",
+            "type": "publicKey"
+          },
+          {
+            "name": "startDate",
+            "type": "u64"
+          },
+          {
+            "name": "endDate",
+            "type": "u64"
           },
           {
             "name": "completeDate",

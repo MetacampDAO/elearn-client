@@ -12,6 +12,8 @@ const Batch = () => {
     const { batchKey } = useParams();
     const [newCertificate, setNewCertificate] = useState<GenCertificate>({
         studentKey: '',
+        startDate: '',
+        endDate: '',
         completeDate: '',
         studentName: '',
         studentGrade: '',
@@ -29,7 +31,7 @@ const Batch = () => {
         (async () => {
             populateCertTable();
         })();
-    }, []);
+    }, [wallet]);
 
     const populateCertTable = async () => {
         if (wallet && batchKey) {
@@ -73,6 +75,8 @@ const Batch = () => {
                     wallet.publicKey,
                     new PublicKey(batchKey),
                     _.isEmpty(newCertificate.studentKey) ? wallet.publicKey : new PublicKey(newCertificate.studentKey),
+                    parseInt(newCertificate.startDate),
+                    parseInt(newCertificate.endDate),
                     parseInt(newCertificate.completeDate),
                     newCertificate.studentName,
                     newCertificate.studentGrade,
@@ -93,6 +97,8 @@ const Batch = () => {
 
                 setNewCertificate({
                     studentKey: '',
+                    startDate: '',
+                    endDate: '',
                     completeDate: '',
                     studentName: '',
                     studentGrade: '',
@@ -282,6 +288,36 @@ const Batch = () => {
                                     value={newCertificate.issuerUri}
                                     onChange={(e) =>
                                         setNewCertificate({ ...newCertificate, issuerUri: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> Start Date</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="1658448000"
+                                    value={newCertificate.startDate}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, startDate: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-span-1 md:col-span-3">
+                            <div className="flex flex-col gap-y-2">
+                                <p> End Date</p>
+                                <input
+                                    type="text"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="1658448000"
+                                    value={newCertificate.endDate}
+                                    onChange={(e) =>
+                                        setNewCertificate({ ...newCertificate, endDate: e.target.value })
                                     }
                                     required
                                 />
