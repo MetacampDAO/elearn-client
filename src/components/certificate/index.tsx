@@ -23,6 +23,15 @@ const Certificate = () => {
         certImg.src = image;
         await certImg.decode();
 
+        const courseNameRegex = /^(.*TGS-\S+)\s(.*)$/;
+        const matchTGS = courseName.match(courseNameRegex);
+        let courseCode;
+
+        if (matchTGS) {
+            courseCode = matchTGS[1];
+            courseName = matchTGS[2];
+        }
+
         // images are loaded here and we can go about our business
         const canvas = canvasRef.current;
         if (canvas == null) throw new Error('Could not get canvas');
@@ -56,6 +65,11 @@ const Certificate = () => {
         currentY += 99;
         ctx.font = '500 64px League Spartan';
         ctx.fillText(courseName, 248, currentY);
+        if (courseCode) {
+            currentY += 46;
+            ctx.font = '500 36px League Spartan';
+            ctx.fillText(courseCode, 248, currentY);
+        }
 
         currentY += 70;
         ctx.font = '28px Montserrat';
