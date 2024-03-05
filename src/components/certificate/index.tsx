@@ -10,6 +10,7 @@ const Certificate = () => {
     const { certPda } = useParams();
     const [canvasUrl, setCanvasUrl] = useState<string>(image);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [studentName, setStudentName] = useState<string>();
 
     const populateCert = async (
         recognition: string,
@@ -84,7 +85,7 @@ const Certificate = () => {
         const dataUrl = canvas.toDataURL('image/png', 1.0);
         const a = document.createElement('a');
         a.href = dataUrl;
-        a.download = 'certificate.png';
+        a.download = `${studentName?.toUpperCase()}.png`;
         document.body.appendChild(a);
         a.click();
     };
@@ -100,7 +101,7 @@ const Certificate = () => {
         });
 
         pdf.addImage(dataUrl, 'JPEG', 0, 0, canvas.width, canvas.height);
-        pdf.save('certificate.pdf');
+        pdf.save(`${studentName?.toUpperCase()}.pdf`);
     };
 
     useEffect(() => {
@@ -116,6 +117,8 @@ const Certificate = () => {
                 };
 
                 const completeDateString = formatDateMilliToString(certAcc.completeDate.toNumber() * 1000);
+
+                setStudentName(certAcc.studentName);
 
                 if (certAcc.startDate && certAcc.endDate) {
                     const startDateString = formatDateMilliToString(certAcc.startDate.toNumber() * 1000);
