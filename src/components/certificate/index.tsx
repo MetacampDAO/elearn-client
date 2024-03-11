@@ -33,6 +33,14 @@ const Certificate = () => {
             courseName = matchTGS[2];
         }
 
+        let courseNameOverFlow;
+
+        if (courseName.length > 45) {
+            let lastSpaceIndex = courseName.substring(0, 46).lastIndexOf(' ');
+            courseNameOverFlow = courseName.substring(lastSpaceIndex + 1);
+            courseName = courseName.substring(0, lastSpaceIndex);
+        }
+
         // images are loaded here and we can go about our business
         const canvas = canvasRef.current;
         if (canvas == null) throw new Error('Could not get canvas');
@@ -66,6 +74,11 @@ const Certificate = () => {
         currentY += 99;
         ctx.font = '500 64px League Spartan';
         ctx.fillText(courseName, 248, currentY);
+        if (courseNameOverFlow) {
+            currentY += 58;
+            ctx.fillText(courseNameOverFlow, 248, currentY);
+        }
+
         if (courseCode) {
             currentY += 46;
             ctx.font = '500 36px League Spartan';
