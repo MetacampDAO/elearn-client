@@ -45,9 +45,8 @@ const Batches = () => {
             setIsLoading(true)
             try {
                 const elClient = await initElearnClient(wallet as any);
-                const [walletManagerProofPDA, _] = await elClient.findManagerProofPDA(wallet.publicKey);
     
-                const { txSig, batch } = await elClient.createBatch(wallet.publicKey, walletManagerProofPDA, newBatchName);
+                const { txSig, batch } = await elClient.createBatch(wallet.publicKey, newBatchName);
     
                 console.log(txSig);
     
