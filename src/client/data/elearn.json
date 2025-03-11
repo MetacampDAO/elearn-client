@@ -1,222 +1,512 @@
 {
-  "version": "0.1.0",
-  "name": "elearn",
+  "address": "93XaPPTDiKJGfzSKkHHLn3uu8gpgAUXwhVWR74ps8dgJ",
+  "metadata": {
+    "name": "elearn",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
   "instructions": [
     {
-      "name": "initializeManager",
-      "accounts": [
-        {
-          "name": "master",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "managerProof",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+      "name": "add_manager",
+      "discriminator": [
+        125,
+        38,
+        192,
+        212,
+        101,
+        91,
+        179,
+        16
       ],
-      "args": [
-        {
-          "name": "managerBump",
-          "type": "u8"
-        }
-      ]
-    },
-    {
-      "name": "addManager",
       "accounts": [
         {
           "name": "admin",
-          "isMut": true,
-          "isSigner": true
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "adminProof",
-          "isMut": false,
-          "isSigner": false
+          "name": "admin_proof",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114,
+                  45,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "admin"
+              }
+            ]
+          }
         },
         {
-          "name": "managerKey",
-          "isMut": false,
-          "isSigner": false
+          "name": "manager_key"
         },
         {
-          "name": "managerProof",
-          "isMut": true,
-          "isSigner": false
+          "name": "manager_proof",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114,
+                  45,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "manager_key"
+              }
+            ]
+          }
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "managerBump",
+          "name": "manager_bump",
           "type": "u8"
         }
       ]
     },
     {
-      "name": "modifyManager",
-      "accounts": [
-        {
-          "name": "admin",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "adminProof",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "managerKey",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "managerProof",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+      "name": "create_batch",
+      "discriminator": [
+        159,
+        198,
+        248,
+        43,
+        248,
+        31,
+        235,
+        86
       ],
-      "args": [
-        {
-          "name": "targetPermissions",
-          "type": "u8"
-        }
-      ]
-    },
-    {
-      "name": "createBatch",
       "accounts": [
         {
           "name": "manager",
-          "isMut": true,
-          "isSigner": true
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "managerProof",
-          "isMut": true,
-          "isSigner": false
+          "name": "manager_proof",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114,
+                  45,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "manager"
+              }
+            ]
+          }
         },
         {
           "name": "batch",
-          "isMut": true,
-          "isSigner": false
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  116,
+                  99,
+                  104,
+                  45,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "manager"
+              },
+              {
+                "kind": "account",
+                "path": "manager_proof.batch_count",
+                "account": "Manager"
+              }
+            ]
+          }
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "batchName",
+          "name": "batch_name",
           "type": "string"
         },
         {
-          "name": "batchBump",
+          "name": "batch_bump",
           "type": "u8"
         }
       ]
     },
     {
-      "name": "createCertificate",
+      "name": "create_certificate",
+      "discriminator": [
+        238,
+        189,
+        143,
+        29,
+        100,
+        80,
+        70,
+        10
+      ],
       "accounts": [
         {
           "name": "manager",
-          "isMut": true,
-          "isSigner": true
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "managerProof",
-          "isMut": true,
-          "isSigner": false
+          "name": "manager_proof",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114,
+                  45,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "manager"
+              }
+            ]
+          }
         },
         {
           "name": "batch",
-          "isMut": true,
-          "isSigner": false
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  116,
+                  99,
+                  104,
+                  45,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "manager"
+              },
+              {
+                "kind": "account",
+                "path": "batch.batch_num",
+                "account": "Batch"
+              }
+            ]
+          }
         },
         {
           "name": "certificate",
-          "isMut": true,
-          "isSigner": false
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  101,
+                  114,
+                  116,
+                  105,
+                  102,
+                  105,
+                  99,
+                  97,
+                  116,
+                  101,
+                  45,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "batch"
+              },
+              {
+                "kind": "account",
+                "path": "batch.certificate_count",
+                "account": "Batch"
+              }
+            ]
+          }
         },
         {
-          "name": "studentKey",
-          "isMut": false,
-          "isSigner": false
+          "name": "student_key"
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "startDate",
+          "name": "complete_date",
           "type": "u64"
         },
         {
-          "name": "endDate",
-          "type": "u64"
-        },
-        {
-          "name": "completeDate",
-          "type": "u64"
-        },
-        {
-          "name": "certificateBump",
+          "name": "certificate_bump",
           "type": "u8"
         },
         {
-          "name": "studentName",
+          "name": "student_name",
           "type": "string"
         },
         {
-          "name": "studentGrade",
+          "name": "student_grade",
           "type": "string"
         },
         {
-          "name": "courseName",
+          "name": "course_name",
           "type": "string"
         },
         {
-          "name": "schoolName",
+          "name": "school_name",
           "type": "string"
         },
         {
-          "name": "schoolUri",
+          "name": "school_uri",
           "type": "string"
         },
         {
-          "name": "issuerName",
+          "name": "issuer_name",
           "type": "string"
         },
         {
-          "name": "issuerRole",
+          "name": "issuer_role",
           "type": "string"
         },
         {
-          "name": "issuerUri",
+          "name": "issuer_uri",
           "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "initialize_manager",
+      "discriminator": [
+        79,
+        37,
+        249,
+        89,
+        35,
+        188,
+        238,
+        111
+      ],
+      "accounts": [
+        {
+          "name": "master",
+          "writable": true,
+          "signer": true,
+          "address": "JakevMAR7R4Evr4PZpTqNAb1KkVXAskzYohd1vxEUqj"
+        },
+        {
+          "name": "manager_proof",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114,
+                  45,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "master"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "manager_bump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "modify_manager",
+      "discriminator": [
+        99,
+        219,
+        194,
+        56,
+        177,
+        219,
+        24,
+        68
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "admin_proof",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114,
+                  45,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "admin"
+              }
+            ]
+          }
+        },
+        {
+          "name": "manager_key"
+        },
+        {
+          "name": "manager_proof",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114,
+                  45,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "manager_key"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "target_permissions",
+          "type": "u8"
         }
       ]
     }
@@ -224,31 +514,68 @@
   "accounts": [
     {
       "name": "Batch",
+      "discriminator": [
+        156,
+        194,
+        70,
+        44,
+        22,
+        88,
+        137,
+        44
+      ]
+    },
+    {
+      "name": "Certificate",
+      "discriminator": [
+        202,
+        229,
+        222,
+        220,
+        116,
+        20,
+        74,
+        67
+      ]
+    },
+    {
+      "name": "Manager",
+      "discriminator": [
+        221,
+        78,
+        171,
+        233,
+        213,
+        142,
+        113,
+        56
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "Batch",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "version",
-            "type": "u16"
+            "name": "manager_key",
+            "type": "pubkey"
           },
           {
-            "name": "managerKey",
-            "type": "publicKey"
-          },
-          {
-            "name": "certificateCount",
+            "name": "certificate_count",
             "type": "u64"
           },
           {
-            "name": "batchNum",
+            "name": "batch_num",
             "type": "u64"
           },
           {
-            "name": "batchName",
+            "name": "batch_name",
             "type": "string"
           },
           {
-            "name": "batchBump",
+            "name": "batch_bump",
             "type": "u8"
           }
         ]
@@ -260,139 +587,59 @@
         "kind": "struct",
         "fields": [
           {
-            "name": "version",
-            "type": "u16"
+            "name": "batch_pda",
+            "type": "pubkey"
           },
           {
-            "name": "batchPda",
-            "type": "publicKey"
+            "name": "manager_key",
+            "type": "pubkey"
           },
           {
-            "name": "managerKey",
-            "type": "publicKey"
+            "name": "student_key",
+            "type": "pubkey"
           },
           {
-            "name": "studentKey",
-            "type": "publicKey"
-          },
-          {
-            "name": "completeDate",
+            "name": "complete_date",
             "type": "u64"
           },
           {
-            "name": "certificateNum",
+            "name": "certificate_num",
             "type": "u64"
           },
           {
-            "name": "certificateBump",
+            "name": "certificate_bump",
             "type": "u8"
           },
           {
-            "name": "studentName",
+            "name": "student_name",
             "type": "string"
           },
           {
-            "name": "studentGrade",
+            "name": "student_grade",
             "type": "string"
           },
           {
-            "name": "courseName",
+            "name": "course_name",
             "type": "string"
           },
           {
-            "name": "schoolName",
+            "name": "school_name",
             "type": "string"
           },
           {
-            "name": "schoolUri",
+            "name": "school_uri",
             "type": "string"
           },
           {
-            "name": "issuerName",
+            "name": "issuer_name",
             "type": "string"
           },
           {
-            "name": "issuerRole",
+            "name": "issuer_role",
             "type": "string"
           },
           {
-            "name": "issuerUri",
-            "type": "string"
-          }
-        ]
-      }
-    },
-    {
-      "name": "CertificateV1",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "version",
-            "type": "u16"
-          },
-          {
-            "name": "batchPda",
-            "type": "publicKey"
-          },
-          {
-            "name": "managerKey",
-            "type": "publicKey"
-          },
-          {
-            "name": "studentKey",
-            "type": "publicKey"
-          },
-          {
-            "name": "startDate",
-            "type": "u64"
-          },
-          {
-            "name": "endDate",
-            "type": "u64"
-          },
-          {
-            "name": "completeDate",
-            "type": "u64"
-          },
-          {
-            "name": "certificateNum",
-            "type": "u64"
-          },
-          {
-            "name": "certificateBump",
-            "type": "u8"
-          },
-          {
-            "name": "studentName",
-            "type": "string"
-          },
-          {
-            "name": "studentGrade",
-            "type": "string"
-          },
-          {
-            "name": "courseName",
-            "type": "string"
-          },
-          {
-            "name": "schoolName",
-            "type": "string"
-          },
-          {
-            "name": "schoolUri",
-            "type": "string"
-          },
-          {
-            "name": "issuerName",
-            "type": "string"
-          },
-          {
-            "name": "issuerRole",
-            "type": "string"
-          },
-          {
-            "name": "issuerUri",
+            "name": "issuer_uri",
             "type": "string"
           }
         ]
@@ -404,34 +651,27 @@
         "kind": "struct",
         "fields": [
           {
-            "name": "version",
-            "type": "u16"
+            "name": "manager_key",
+            "type": "pubkey"
           },
           {
-            "name": "managerKey",
-            "type": "publicKey"
-          },
-          {
-            "name": "batchCount",
+            "name": "batch_count",
             "type": "u64"
           },
           {
-            "name": "certificateCount",
+            "name": "certificate_count",
             "type": "u128"
           },
           {
-            "name": "permissionType",
+            "name": "permission_type",
             "type": "u8"
           },
           {
-            "name": "managerBump",
+            "name": "manager_bump",
             "type": "u8"
           }
         ]
       }
     }
-  ],
-  "metadata": {
-    "address": "9UZhEPPrzXSAScvZ2cDF1GgYGJTZrAcPUEwNGLvvu9Pr"
-  }
+  ]
 }
