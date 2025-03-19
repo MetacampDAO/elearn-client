@@ -272,8 +272,10 @@ export class ElearnClient extends AccountUtils {
       issuerName,
       issuerRole,
       issuerUri
-    ).accounts({
+    ).accountsPartial({
       manager: managerPk,
+      batch: batch,
+      certificate: certificate,
       studentKey,
     }).signers(signers)
     .rpc();
