@@ -10,19 +10,26 @@ import _ from 'lodash';
 const Batch = () => {
     const wallet = useAnchorWallet();
     const { batchKey } = useParams();
+    const studentKey = process.env.REACT_APP_CERTIFICATE_STUDENT_KEY ?? '';
+    const schoolName = process.env.REACT_APP_CERTIFICATE_SCHOOL_NAME ?? '';
+    const schoolUri = process.env.REACT_APP_CERTIFICATE_SCHOOL_LOGO_URI ?? '';
+    const issuerName = process.env.REACT_APP_CERTIFICATE_ISSUER_NAME ?? '';
+    const issuerRole = process.env.REACT_APP_CERTIFICATE_ISSUER_ROLE ?? '';
+    const issuerUri = process.env.REACT_APP_CERTIFICATE_ISSUER_SIGNATURE_URI ?? '';
+
     const [newCertificate, setNewCertificate] = useState<GenCertificate>({
-        studentKey: '',
+        studentKey,
         startDate: '',
         endDate: '',
         completeDate: '',
         studentName: '',
         studentGrade: '',
         courseName: '',
-        schoolName: '',
-        schoolUri: '',
-        issuerName: '',
-        issuerRole: '',
-        issuerUri: '',
+        schoolName,
+        schoolUri,
+        issuerName,
+        issuerRole,
+        issuerUri,
     });
     const [certList, setCertList] = useState<CertificateAcc[]>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -316,9 +323,7 @@ const Batch = () => {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="1658448000"
                                     value={newCertificate.endDate}
-                                    onChange={(e) =>
-                                        setNewCertificate({ ...newCertificate, endDate: e.target.value })
-                                    }
+                                    onChange={(e) => setNewCertificate({ ...newCertificate, endDate: e.target.value })}
                                     required
                                 />
                             </div>
