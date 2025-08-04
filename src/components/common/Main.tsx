@@ -18,7 +18,7 @@ const Main = ({ childComp }: MainProp) => {
                 </div>
                 <p className="text-center text-sm text-gray-400 my-10">
                     &copy; 2024{' '}
-                    <a href="https://metacamp.so" className="hover:underline">
+                    <a href="https://metacamp.sg" className="hover:underline">
                         Metacamp
                     </a>
                     . All rights reserved.

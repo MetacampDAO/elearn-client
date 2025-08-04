@@ -158,7 +158,7 @@ const Home = () => {
                             </g>
                         </svg>
                         <h2 className="mt-4 font-display text-base text-white">
-                            <a href="mailto:team@metacamp.so">
+                            <a href="mailto:team@metacamp.sg">
                                 <span className="absolute -inset-px rounded-xl"></span>Certification Enquiries
                             </a>
                         </h2>

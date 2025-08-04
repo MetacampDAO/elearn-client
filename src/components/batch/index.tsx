@@ -284,7 +284,7 @@ const Batch = () => {
                                 <input
                                     type="text"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="https://metacamp.so/signature.png"
+                                    placeholder="https://metacamp.sg/signature.png"
                                     value={newCertificate.issuerUri}
                                     onChange={(e) =>
                                         setNewCertificate({ ...newCertificate, issuerUri: e.target.value })
@@ -359,7 +359,7 @@ const Batch = () => {
                                 <input
                                     type="text"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="https://metacamp.so/logo.png"
+                                    placeholder="https://metacamp.sg/logo.png"
                                     value={newCertificate.schoolUri}
                                     onChange={(e) =>
                                         setNewCertificate({ ...newCertificate, schoolUri: e.target.value })
