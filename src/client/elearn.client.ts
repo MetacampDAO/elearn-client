@@ -39,7 +39,6 @@ export class ElearnClient extends AccountUtils {
       //means running in prod
       this.elearnProgram = new anchor.Program<Elearn>(
         idl as any,
-        programId,
         this.provider
       );
     }
@@ -64,7 +63,7 @@ export class ElearnClient extends AccountUtils {
       certficatePDA
     );
     if (accountInfo?.data) {
-      return VersionLayout.decode(accountInfo?.data, 8).version;
+      return VersionLayout.decode(new Uint8Array(accountInfo.data), 8).version;
     } else {
       return 0;
     }
@@ -149,8 +148,10 @@ export class ElearnClient extends AccountUtils {
       }
     ];
 
-    const filteredCertificatesV0 = await this.elearnProgram.account.certificate.all(filter);
-    const filteredCertificatesV1 = await this.elearnProgram.account.certificateV1.all(filter);
+    const [filteredCertificatesV0, filteredCertificatesV1] = await Promise.all([
+      this.elearnProgram.account.certificate.all(filter),
+      this.elearnProgram.account.certificateV1.all(filter),
+    ]);
     const filteredCertificates = [...filteredCertificatesV0, ...filteredCertificatesV1];
 
     return filteredCertificates;
@@ -181,9 +182,7 @@ export class ElearnClient extends AccountUtils {
 
   async addManager (
     admin: PublicKey| Keypair,
-    adminProof: PublicKey,
     managerKey: PublicKey,
-    managerProof: PublicKey,
     managerBump: number, 
   ) {
     const signers  = [];
@@ -193,10 +192,7 @@ export class ElearnClient extends AccountUtils {
     const txSig = await this.elearnProgram.methods.addManager(managerBump)
       .accounts({
         admin: adminPk as any,
-        adminProof,
         managerKey,
-        managerProof,
-        systemProgram: SystemProgram.programId
       }).signers(signers)
       .rpc();
 
@@ -205,9 +201,7 @@ export class ElearnClient extends AccountUtils {
 
   async modifyManager (
     admin: PublicKey| Keypair,
-    adminProof: PublicKey,
     managerKey: PublicKey,
-    managerProof: PublicKey,
     targetPermissions: number, 
   ) {
     const signers  = [];
@@ -217,10 +211,7 @@ export class ElearnClient extends AccountUtils {
     const txSig = await this.elearnProgram.methods.modifyManager(targetPermissions)
       .accounts({
         admin: adminPk as any,
-        adminProof,
         managerKey,
-        managerProof,
-        systemProgram: SystemProgram.programId
       }).signers(signers)
       .rpc();
 
@@ -229,7 +220,6 @@ export class ElearnClient extends AccountUtils {
 
   async createBatch (
     manager: PublicKey| Keypair,
-    managerProof: PublicKey,
     batchName: string,
   ) {
     const signers  = [];
@@ -241,8 +231,6 @@ export class ElearnClient extends AccountUtils {
     const txSig = await this.elearnProgram.methods.createBatch(batchName, batchBump)
       .accounts({
         manager: managerPk as any,
-        managerProof,
-        batch
       }).signers(signers)
       .rpc();
 
@@ -269,7 +257,6 @@ export class ElearnClient extends AccountUtils {
     if (isKp(manager)) signers.push(<Keypair>manager)
 
     const managerPk = (isKp(manager)? (<Keypair>manager).publicKey: manager) as PublicKey;
-    const [managerProof, _] = await this.findManagerProofPDA(managerPk);
     const [certificate, certificateBump] = await this.findNewCertificatePDA(batch);
 
     const txSig = await this.elearnProgram.methods.createCertificate(
@@ -285,13 +272,11 @@ export class ElearnClient extends AccountUtils {
       issuerName,
       issuerRole,
       issuerUri
-    ).accounts({
+    ).accountsPartial({
       manager: managerPk,
-      managerProof,
-      batch,
-      certificate,
+      batch: batch,
+      certificate: certificate,
       studentKey,
-      systemProgram: SystemProgram.programId
     }).signers(signers)
     .rpc();
 

@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/elearn.json`.
  */
 export type Elearn = {
-  "address": "93XaPPTDiKJGfzSKkHHLn3uu8gpgAUXwhVWR74ps8dgJ",
+  "address": "9UZhEPPrzXSAScvZ2cDF1GgYGJTZrAcPUEwNGLvvu9Pr",
   "metadata": {
     "name": "elearn",
     "version": "0.1.0",
@@ -325,6 +325,14 @@ export type Elearn = {
       ],
       "args": [
         {
+          "name": "startDate",
+          "type": "u64"
+        },
+        {
+          "name": "endDate",
+          "type": "u64"
+        },
+        {
           "name": "completeDate",
           "type": "u64"
         },
@@ -545,6 +553,19 @@ export type Elearn = {
       ]
     },
     {
+      "name": "certificateV1",
+      "discriminator": [
+        239,
+        243,
+        107,
+        96,
+        78,
+        75,
+        170,
+        166
+      ]
+    },
+    {
       "name": "manager",
       "discriminator": [
         221,
@@ -564,6 +585,10 @@ export type Elearn = {
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
           {
             "name": "managerKey",
             "type": "pubkey"
@@ -592,6 +617,10 @@ export type Elearn = {
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
           {
             "name": "batchPda",
             "type": "pubkey"
@@ -652,10 +681,90 @@ export type Elearn = {
       }
     },
     {
+      "name": "certificateV1",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
+          {
+            "name": "batchPda",
+            "type": "pubkey"
+          },
+          {
+            "name": "managerKey",
+            "type": "pubkey"
+          },
+          {
+            "name": "studentKey",
+            "type": "pubkey"
+          },
+          {
+            "name": "startDate",
+            "type": "u64"
+          },
+          {
+            "name": "endDate",
+            "type": "u64"
+          },
+          {
+            "name": "completeDate",
+            "type": "u64"
+          },
+          {
+            "name": "certificateNum",
+            "type": "u64"
+          },
+          {
+            "name": "certificateBump",
+            "type": "u8"
+          },
+          {
+            "name": "studentName",
+            "type": "string"
+          },
+          {
+            "name": "studentGrade",
+            "type": "string"
+          },
+          {
+            "name": "courseName",
+            "type": "string"
+          },
+          {
+            "name": "schoolName",
+            "type": "string"
+          },
+          {
+            "name": "schoolUri",
+            "type": "string"
+          },
+          {
+            "name": "issuerName",
+            "type": "string"
+          },
+          {
+            "name": "issuerRole",
+            "type": "string"
+          },
+          {
+            "name": "issuerUri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
       "name": "manager",
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "version",
+            "type": "u16"
+          },
           {
             "name": "managerKey",
             "type": "pubkey"

@@ -42,14 +42,11 @@ const Users = () => {
         if (wallet) {
             const elClient = await initElearnClient(wallet as any);
             const newManagerKey = new PublicKey(newManagerKeyStr);
-            const [walletManagerProofPDA, _] = await elClient.findManagerProofPDA(wallet.publicKey);
-            const [newManagerProofPDA, newManagerBump] = await elClient.findManagerProofPDA(newManagerKey);
+            const [_, newManagerBump] = await elClient.findManagerProofPDA(newManagerKey);
 
             const { txSig } = await elClient.addManager(
                 wallet.publicKey,
-                walletManagerProofPDA,
                 newManagerKey,
-                newManagerProofPDA,
                 newManagerBump
             );
 
@@ -69,7 +66,6 @@ const Users = () => {
     ) => {
         if (wallet) {
             const elClient = await initElearnClient(wallet as any);
-            const [walletManagerProofPDA, _] = await elClient.findManagerProofPDA(wallet.publicKey);
             const newPermissions =
                 (currentPermissions & targetPermission) > 0
                     ? currentPermissions - targetPermission
@@ -77,9 +73,7 @@ const Users = () => {
 
             const { txSig } = await elClient.modifyManager(
                 wallet.publicKey,
-                walletManagerProofPDA,
                 managerKey,
-                managerProofPDA,
                 newPermissions
             );
 
